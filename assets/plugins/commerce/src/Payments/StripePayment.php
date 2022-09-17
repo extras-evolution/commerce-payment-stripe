@@ -42,10 +42,14 @@ class StripePayment extends Payment implements \Commerce\Interfaces\Payment
             ],
 
             'line_items' => [[
-                'currency' => $defaultCurrency,
-                'amount' => $amount,
-                'name' => $this->modx->parseText($this->lang['stripe.paymentTitle'], ['order_id' => $orderId]),
                 'quantity' => 1,
+				'price_data' => [
+					'currency' => $defaultCurrency,
+                	'unit_amount' => $amount,
+					'product_data' => [
+                		'name' => $this->modx->parseText($this->lang['stripe.paymentTitle'], ['order_id' => $orderId]),
+					]
+				]
             ]],
             'mode' => 'payment',
             'success_url' => $this->modx->getConfig('site_url') . 'commerce/' . self::PAYMENT_KEY . '/payment-success/?' . http_build_query([
